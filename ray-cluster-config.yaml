@@ -1,0 +1,49 @@
+# ray-cluster-config.yaml
+
+cluster_name: ray-vertex-cluster
+
+provider:
+  type: gcp
+  region: us-west2
+  availability_zone: us-west2-a
+  project_id: fashion-app-f2861
+
+available_node_types:
+  # Changed ray.head.default to ray-head-default
+  ray-head-default: 
+    resources: {"CPU": 2}
+    node_config:
+      machineType: n1-standard-4
+      disks:
+        - boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: projects/deeplearning-platform-release/global/images/family/pytorch-latest-gpu
+  # Changed ray.worker.default to ray-worker-default
+  ray-worker-default:
+    min_workers: 1
+    max_workers: 2
+    resources: {"CPU": 2}
+    node_config:
+      machineType: n1-standard-4
+      disks:
+        - boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: projects/deeplearning-platform-release/global/images/family/pytorch-latest-gpu
+
+# Updated head_node_type to match the new name
+head_node_type: ray-head-default
+
+setup_commands:
+  - |
+    sudo bash -c '
+      rm -rf /etc/security/limits.d;
+      echo "* soft nofile 65535" >> /etc/security/limits.conf;
+      echo "* hard nofile 65535" >> /etc/security/limits.conf;
+    '
+
+# Required in legacy configs even if empty
+worker_nodes: {}
+
+file_mounts: {}

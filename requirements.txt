@@ -1,0 +1,12 @@
+ray[default]==2.42
+pandas
+torch
+torchvision
+torchaudio
+Pillow
+numpy
+google-cloud-aiplatform[vertex_ray]
+google-cloud-aiplatform[ray]
+google-api-python-client
+scikit-learn
+kagglehub 
